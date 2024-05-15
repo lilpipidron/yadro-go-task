@@ -2,10 +2,11 @@ package config
 
 import (
 	"bufio"
-	"log"
 	"strconv"
 	"strings"
 	"time"
+
+	lg "github.com/lilpipidron/yadro-go-task/internal/logger"
 )
 
 type Config struct {
@@ -15,7 +16,7 @@ type Config struct {
 	Cost  int
 }
 
-func MustLoad(reader *bufio.Reader) *Config {
+func MustLoad(reader *bufio.Reader, log lg.Log) *Config {
 	conf := &Config{
 		Start: time.Time{},
 		End:   time.Time{},
@@ -62,7 +63,7 @@ func MustLoad(reader *bufio.Reader) *Config {
 		log.Fatal("incorrect cost format: ")
 	}
 
-	log.Println("Configuration: ", conf)
+	log.Info("Configuration: ", conf)
 
 	return conf
 }
