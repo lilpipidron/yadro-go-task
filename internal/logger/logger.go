@@ -19,7 +19,7 @@ func NewLogger() *logger {
 
 func (log *logger) Fatal(a ...interface{}) {
 	t := time.Now()
-	timeStr := t.Format("2006-01-02 15:04:05")
+	timeStr := t.Format(time.RFC3339)
 
 	msg := ""
 	for _, arg := range a {
@@ -33,7 +33,7 @@ func (log *logger) Fatal(a ...interface{}) {
 
 func (log *logger) Info(a ...interface{}) {
 	t := time.Now()
-	timeStr := t.Format("2006-01-02 15:04:05")
+	timeStr := t.Format(time.RFC3339)
 
 	msg := ""
 	for _, arg := range a {
