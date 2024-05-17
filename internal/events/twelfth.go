@@ -19,7 +19,9 @@ func (event *Twelfth) Execution(club *club.Club, log lg.Log) {
 
 	client := club.Clients[event.Name]
 	client.Table = event.Table
-  club.Clients[client.Name] = client
+  client.Time = event.Time
+
+	club.Clients[client.Name] = client
 	table := table.Table{Client: client, ID: event.Table}
 	club.Tables[table.ID] = table
 }

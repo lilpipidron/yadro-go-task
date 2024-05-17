@@ -38,7 +38,7 @@ func (event *Third) Parse(str string, log lg.Log) Event {
 	var err error
 
 	if event.Time, err = time.Parse("15:04", params[0]); err != nil {
-		log.Fatal("can't parser time: ", err, str)
+		log.Fatal("can't parse time: ", err)
 	}
 
 	event.Name = params[2]

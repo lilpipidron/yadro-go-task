@@ -16,6 +16,8 @@ type First struct {
 }
 
 func (event *First) Execution(log lg.Log, club *club.Club) {
+  log.Println(event.Time, 1, event.Name)
+
 	if _, ok := club.Clients[event.Name]; ok {
 		th := &Thirteenth{Time: event.Time, Error: YouShallNotPass}
 		th.Execution(log)
@@ -28,7 +30,6 @@ func (event *First) Execution(log lg.Log, club *club.Club) {
 		return
 	}
 
-	fmt.Println(event.Time, 1, event.Name)
 
 	client := cl.Client{Name: event.Name, Table: 0}
 

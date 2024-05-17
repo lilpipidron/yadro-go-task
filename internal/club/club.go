@@ -1,10 +1,12 @@
 package club
 
 import (
+	"sort"
 	"time"
 
 	"github.com/lilpipidron/yadro-go-task/internal/client"
 	"github.com/lilpipidron/yadro-go-task/internal/config"
+	lg "github.com/lilpipidron/yadro-go-task/internal/logger"
 	"github.com/lilpipidron/yadro-go-task/internal/table"
 )
 
@@ -25,5 +27,40 @@ func NewClub(config config.Config) *Club {
 		Queue:          make(map[string]client.Client),
 		Earnings:       make(map[client.Client]time.Time),
 		Config:         config,
+	}
+}
+
+func (club *Club) CalculateRevenue(log lg.Log) {
+	for key, val := range club.Earnings {
+		fullTime := val.Sub(key.Time)
+		hours := fullTime.Hours()
+		minutes := hours*60 - fullTime.Minutes()
+
+		if minutes != 0 {
+			hours++
+		}
+
+		log.Println(hours * float64(club.Config.Cost))
+	}
+}
+
+func (club *Club) CloseClub(log lg.Log) {
+	var clients []string
+
+	for val := range club.Queue {
+		clients = append(clients, val)
+	}
+
+	for _, key := range club.Tables {
+		client := key.Client.Name
+		clients = append(clients, client)
+	}
+
+	sort.Slice(clients, func(i, j int) bool {
+		return clients[i] < clients[j]
+	})
+
+	for _, name := range clients {
+		log.Println(club.Config.End, 11, name)
 	}
 }
