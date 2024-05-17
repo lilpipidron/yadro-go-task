@@ -9,16 +9,18 @@ import (
 type Log interface {
 	Fatal(a ...interface{})
 	Info(a ...interface{})
-	Error(a ...interface{})
+	Ptintln(a ...interface{})
 }
 
-type logger struct{}
-
-func NewLogger() *logger {
-	return &logger{}
+type Logger struct {
+	Out *os.File
 }
 
-func (log *logger) Fatal(a ...interface{}) {
+func NewLogger(out *os.File) *Logger {
+	return &Logger{Out: out}
+}
+
+func (log *Logger) Fatal(a ...interface{}) {
 	t := time.Now()
 	timeStr := t.Format(time.RFC3339)
 
@@ -27,24 +29,21 @@ func (log *logger) Fatal(a ...interface{}) {
 		msg += fmt.Sprintf("%+v ", arg)
 	}
 
-	fmt.Printf("%s \033[31m[FATAL ERROR] %s\033[0m\n", timeStr, msg)
+	fmt.Fprintf(os.Stdout, "%s \033[31m[FATAL ERROR] %s\033[0m\n", []any{timeStr, msg}...)
 
 	os.Exit(1)
 }
 
-func (log *logger) Error(a ...interface{}) {
-	t := time.Now()
-	timeStr := t.Format(time.RFC3339)
-
+func (log *Logger) Println(a ...interface{}) {
 	msg := ""
 	for _, arg := range a {
 		msg += fmt.Sprintf("%+v ", arg)
 	}
 
-	fmt.Printf("%s \033[33m[ERROR] %s\033[0m\n", timeStr, msg)
+	fmt.Fprintln(log.Out, []any{msg}...)
 }
 
-func (log *logger) Info(a ...interface{}) {
+func (log *Logger) Info(a ...interface{}) {
 	t := time.Now()
 	timeStr := t.Format(time.RFC3339)
 
@@ -53,5 +52,5 @@ func (log *logger) Info(a ...interface{}) {
 		msg += fmt.Sprintf("%+v ", arg)
 	}
 
-	fmt.Printf("%s \033[34m[INFO] %s\033[0m\n", timeStr, msg)
+	fmt.Fprintf(os.Stdout, "%s \033[34m[INFO] %s\033[0m\n", []any{timeStr, msg}...)
 }
