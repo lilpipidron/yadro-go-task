@@ -11,6 +11,6 @@ type Thirteenth struct {
 	Error string
 }
 
-func (event *Thirteenth) Execution(log lg.Logger) {
+func (event *Thirteenth) Execution(log lg.Log) {
 	log.Println(event.Time, 13, event.Error)
 }

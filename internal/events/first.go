@@ -1,9 +1,12 @@
 package events
 
 import (
+	"crypto/ed25519"
 	"fmt"
+	"go/ast"
 	"strings"
 	"time"
+	"unicode"
 
 	cl "github.com/lilpipidron/yadro-go-task/internal/client"
 	"github.com/lilpipidron/yadro-go-task/internal/club"
@@ -23,7 +26,8 @@ func (event *First) Execution(log lg.Log, club *club.Club) {
 	}
 
 	if event.Time.Before(club.Config.Start) || event.Time.After(club.Config.End) {
-		// 13 event
+		th := &Thirteenth{Time: event.Time, Error: NotOpenYet}
+		th.Execution(log)
 		return
 	}
 
