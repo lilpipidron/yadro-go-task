@@ -19,4 +19,6 @@ func (event *Eleventh) Execution(time time.Time, name string, club *club.Club, l
 	delete(club.Clients, name)
 
 	club.Earnings[client] = time
+
+	club.EvalibleTables <- client.Table
 }

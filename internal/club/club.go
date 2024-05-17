@@ -9,8 +9,10 @@ import (
 )
 
 type Club struct {
-	Clients  map[string]client.Client
-	Tables   map[int]table.Table
-	Earnings map[client.Client]time.Time
-	Config   config.Config
+	Clients        map[string]client.Client
+	Tables         map[int]table.Table
+	EvalibleTables chan int
+	Queue          chan client.Client
+	Earnings       map[client.Client]time.Time
+	Config         config.Config
 }
