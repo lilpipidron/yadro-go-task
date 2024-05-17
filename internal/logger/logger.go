@@ -9,6 +9,7 @@ import (
 type Log interface {
 	Fatal(a ...interface{})
 	Info(a ...interface{})
+	Error(a ...interface{})
 }
 
 type logger struct{}
