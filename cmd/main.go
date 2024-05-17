@@ -2,24 +2,46 @@ package main
 
 import (
 	"bufio"
-	"github.com/lilpipidron/yadro-go-task/internal/club"
-	"github.com/lilpipidron/yadro-go-task/internal/config"
-	"github.com/lilpipidron/yadro-go-task/internal/events"
 	"io"
 	"os"
 	"strings"
+	"time"
 
-	"github.com/lilpipidron/yadro-go-task/internal/logger"
+	"github.com/lilpipidron/yadro-go-task/internal/club"
+	"github.com/lilpipidron/yadro-go-task/internal/config"
+	"github.com/lilpipidron/yadro-go-task/internal/events"
+	lg "github.com/lilpipidron/yadro-go-task/internal/logger"
 )
 
-func main() {
-	log := logger.NewLogger(os.Stdout)
-
-	if len(os.Args) != 2 {
-		log.Fatal("incorrect number of launch parameters")
+func TryPlaceClient(club *club.Club, log lg.Log) {
+	if len(club.EvalibleTables) > 0 && len(club.Queue) > 0 {
+		var table int
+		var client string
+		for key := range club.Queue {
+			client = key
+			break
+		}
+		for key := range club.EvalibleTables {
+			table = key
+			break
+		}
+		tw := events.Twelfth{
+			Name:  client,
+			Table: table,
+			Time:  club.CurrentTime,
+		}
+		tw.Execution(club, log)
 	}
+}
 
-	file, err := os.Open(os.Args[1])
+func main() {
+	log := lg.NewLogger(os.Stdout)
+	/*
+		if len(os.Args) != 2 {
+			log.Fatal("incorrect number of launch parameters")
+		}*/
+
+	file, err := os.Open("tests/1.txt")
 	if err != nil {
 		log.Fatal("can't open file", err)
 	}
@@ -29,6 +51,11 @@ func main() {
 	conf := config.MustLoad(reader, log)
 
 	cl := club.NewClub(*conf)
+	tables := make(map[int]int)
+	for i := 1; i <= conf.N; i++ {
+		tables[i] = i
+	}
+	cl.EvalibleTables = tables
 
 	for {
 		str, err := reader.ReadString('\n')
@@ -38,22 +65,41 @@ func main() {
 
 		str = strings.TrimSpace(str)
 		params := strings.Split(str, " ")
-		if params[1] == "1" {
-			ev := events.First{}
+
+		switch params[1] {
+		case "1":
+			ev := events.First{
+				Time: time.Time{},
+				Name: "",
+			}
 			ev.Parse(str, log)
 			ev.Execution(log, cl)
-		} else if params[1] == "2" {
-			ev := events.Second{}
+		case "2":
+			ev := events.Second{
+				Time:  time.Time{},
+				Name:  "",
+				Table: 0,
+			}
 			ev.Parse(str, log)
 			ev.Execution(log, cl)
-		} else if params[1] == "3" {
-			ev := events.Third{}
+		case "3":
+			ev := events.Third{
+				Time: time.Time{},
+				Name: "",
+			}
 			ev.Parse(str, log)
 			ev.Execution(log, cl)
-		} else if params[1] == "4" {
-			ev := events.Fourth{}
+		case "4":
+			ev := events.Fourth{
+				Time: time.Time{},
+				Name: "",
+			}
 			ev.Parse(str, log)
 			ev.Execution(log, cl)
 		}
+		TryPlaceClient(cl, log)
 	}
+
+	cl.CloseClub(log)
+	cl.CalculateRevenue(log)
 }

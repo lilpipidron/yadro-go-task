@@ -16,9 +16,12 @@ type Third struct {
 func (event *Third) Execution(log lg.Log, club *club.Club) {
 	log.Println(event.Time, 3, event.Name)
 
+	club.CurrentTime = event.Time
+
 	if len(club.EvalibleTables) != 0 {
 		th := &Thirteenth{Time: event.Time, Error: ICanWaitNoLonger}
 		th.Execution(log)
+		return
 	}
 
 	if len(club.Queue) > club.Config.N {

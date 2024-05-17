@@ -17,9 +17,13 @@ type Twelfth struct {
 func (event *Twelfth) Execution(club *club.Club, log lg.Log) {
 	log.Println(event.Time, 12, event.Name, event.Table)
 
+	club.CurrentTime = event.Time
 	client := club.Clients[event.Name]
 	client.Table = event.Table
-  client.Time = event.Time
+	client.Time = event.Time
+
+	delete(club.Queue, event.Name)
+	delete(club.EvalibleTables, event.Table)
 
 	club.Clients[client.Name] = client
 	table := table.Table{Client: client, ID: event.Table}

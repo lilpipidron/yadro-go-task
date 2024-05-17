@@ -16,6 +16,7 @@ type Fourth struct {
 func (event *Fourth) Execution(log lg.Log, club *club.Club) {
 	log.Println(event.Time, 4, event.Name)
 
+	club.CurrentTime = event.Time
 	client, ok := club.Clients[event.Name]
 	if !ok {
 		th := &Thirteenth{Time: event.Time, Error: ClientUnknown}

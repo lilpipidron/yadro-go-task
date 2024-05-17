@@ -1,6 +1,7 @@
 package club
 
 import (
+	"fmt"
 	"sort"
 	"time"
 
@@ -17,6 +18,7 @@ type Club struct {
 	Queue          map[string]client.Client
 	Earnings       map[client.Client]time.Time
 	Config         config.Config
+	CurrentTime    time.Time
 }
 
 func NewClub(config config.Config) *Club {
@@ -40,7 +42,7 @@ func (club *Club) CalculateRevenue(log lg.Log) {
 			hours++
 		}
 
-		log.Println(hours * float64(club.Config.Cost))
+		fmt.Println(hours * float64(club.Config.Cost))
 	}
 }
 
@@ -61,6 +63,10 @@ func (club *Club) CloseClub(log lg.Log) {
 	})
 
 	for _, name := range clients {
+		if _, ok := club.Queue[name]; !ok {
+			client := club.Clients[name]
+			club.Earnings[client] = club.Config.End
+		}
 		log.Println(club.Config.End, 11, name)
 	}
 }

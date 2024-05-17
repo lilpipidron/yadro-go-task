@@ -1,7 +1,6 @@
 package events
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -16,22 +15,28 @@ type First struct {
 }
 
 func (event *First) Execution(log lg.Log, club *club.Club) {
-  log.Println(event.Time, 1, event.Name)
+	log.Println(event.Time, 1, event.Name)
+	club.CurrentTime = event.Time
 
 	if _, ok := club.Clients[event.Name]; ok {
 		th := &Thirteenth{Time: event.Time, Error: YouShallNotPass}
 		th.Execution(log)
+
 		return
 	}
 
 	if event.Time.Before(club.Config.Start) || event.Time.After(club.Config.End) {
 		th := &Thirteenth{Time: event.Time, Error: NotOpenYet}
 		th.Execution(log)
+
 		return
 	}
 
-
-	client := cl.Client{Name: event.Name, Table: 0}
+	client := cl.Client{
+		Time:  event.Time,
+		Name:  event.Name,
+		Table: 0,
+	}
 
 	club.Clients[client.Name] = client
 	club.Queue[client.Name] = client

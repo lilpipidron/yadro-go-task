@@ -15,6 +15,7 @@ type Eleventh struct {
 func (event *Eleventh) Execution(club *club.Club, log lg.Log) {
 	log.Println(event.Time, 11, event.Name)
 
+	club.CurrentTime = event.Time
 	client := club.Clients[event.Name]
 	delete(club.Clients, event.Name)
 

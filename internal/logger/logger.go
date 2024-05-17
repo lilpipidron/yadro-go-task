@@ -9,7 +9,7 @@ import (
 type Log interface {
 	Fatal(a ...interface{})
 	Info(a ...interface{})
-	Println(a ...interface{})
+	Println(tm time.Time, a ...interface{})
 }
 
 type Logger struct {
@@ -34,13 +34,13 @@ func (log *Logger) Fatal(a ...interface{}) {
 	os.Exit(1)
 }
 
-func (log *Logger) Println(a ...interface{}) {
+func (log *Logger) Println(tm time.Time, a ...interface{}) {
 	msg := ""
 	for _, arg := range a {
 		msg += fmt.Sprintf("%+v ", arg)
 	}
 
-	fmt.Fprintln(log.Out, []any{msg}...)
+	fmt.Fprintln(log.Out, []any{tm.Format("15:04"), msg}...)
 }
 
 func (log *Logger) Info(a ...interface{}) {

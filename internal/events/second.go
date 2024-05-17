@@ -18,6 +18,8 @@ type Second struct {
 
 func (event *Second) Execution(log lg.Log, club *club.Club) {
 	log.Println(event.Time, 2, event.Name, event.Table)
+
+	club.CurrentTime = event.Time
 	client, ok := club.Clients[event.Name]
 	if !ok {
 		th := &Thirteenth{Time: event.Time, Error: ClientUnknown}
@@ -26,7 +28,7 @@ func (event *Second) Execution(log lg.Log, club *club.Club) {
 	}
 
 	if _, ok := club.Tables[event.Table]; ok {
-		th := &Thirteenth{Time: event.Time, Error: PlacelsBusy}
+		th := &Thirteenth{Time: event.Time, Error: PlacesBusy}
 		th.Execution(log)
 		return
 	}
@@ -34,7 +36,7 @@ func (event *Second) Execution(log lg.Log, club *club.Club) {
 	table := table.Table{ID: event.Table, Client: client}
 	client.Table = table.ID
 	client.Time = event.Time
-  club.Clients[client.Name] = client
+	club.Clients[client.Name] = client
 	club.Tables[event.Table] = table
 	delete(club.Queue, event.Name)
 	delete(club.EvalibleTables, table.ID)

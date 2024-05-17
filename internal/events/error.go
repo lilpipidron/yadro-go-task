@@ -3,7 +3,7 @@ package events
 const (
 	YouShallNotPass  = "YouShallNotPass"
 	NotOpenYet       = "NotOpenYet"
-	PlacelsBusy      = "PlacelsBusy"
+	PlacesBusy       = "PlacesBusy"
 	ClientUnknown    = "ClientUnknown"
 	ICanWaitNoLonger = "ICanWaitNoLonger!"
 )
