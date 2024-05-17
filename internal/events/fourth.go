@@ -34,13 +34,13 @@ func (event *Fourth) Parse(str string, log lg.Log) Event {
 	params := strings.Split(str, " ")
 
 	if len(params) != 3 {
-		log.Fatal("incorrent number params")
+		log.Fatal("incorrent number params ", str)
 	}
 
 	var err error
 
 	if event.Time, err = time.Parse("15:04", params[0]); err != nil {
-		log.Fatal("can't parse time: ", err)
+		log.Fatal("can't parser time: ", err, str)
 	}
 
 	event.Name = params[2]

@@ -16,3 +16,14 @@ type Club struct {
 	Earnings       map[client.Client]time.Time
 	Config         config.Config
 }
+
+func NewClub(config config.Config) *Club {
+	return &Club{
+		Clients:        make(map[string]client.Client),
+		Tables:         make(map[int]table.Table),
+		EvalibleTables: make(map[int]int),
+		Queue:          make(map[string]client.Client),
+		Earnings:       make(map[client.Client]time.Time),
+		Config:         config,
+	}
+}
