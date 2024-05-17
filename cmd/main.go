@@ -41,7 +41,7 @@ func main() {
 			log.Fatal("incorrect number of launch parameters")
 		}*/
 
-	file, err := os.Open("tests/1.txt")
+	file, err := os.Open("tests/3.txt")
 	if err != nil {
 		log.Fatal("can't open file", err)
 	}
@@ -59,7 +59,7 @@ func main() {
 
 	for {
 		str, err := reader.ReadString('\n')
-		if err == io.EOF {
+		if err == io.EOF && str == "" {
 			break
 		}
 

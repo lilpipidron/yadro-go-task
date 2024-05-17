@@ -33,17 +33,17 @@ func NewClub(config config.Config) *Club {
 }
 
 func (club *Club) CalculateRevenue(log lg.Log) {
+	var hours float64
 	for key, val := range club.Earnings {
 		fullTime := val.Sub(key.Time)
-		hours := fullTime.Hours()
+		hours += fullTime.Hours()
 		minutes := hours*60 - fullTime.Minutes()
 
 		if minutes != 0 {
 			hours++
 		}
-
-		fmt.Println(hours * float64(club.Config.Cost))
 	}
+	fmt.Println(hours * float64(club.Config.Cost))
 }
 
 func (club *Club) CloseClub(log lg.Log) {
