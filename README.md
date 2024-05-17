@@ -10,7 +10,7 @@ git clone https://github.com/lilpipidron/yadro-go-task
 ```
 doker build -t IMAGE_NAME .
 ```
-### Запуск
+## Запуск
 ```
 docker run -t IMAGE_NAME ./tests/TESTNAME
 ```
