@@ -36,12 +36,12 @@ func TryPlaceClient(club *club.Club, log lg.Log) {
 
 func main() {
 	log := lg.NewLogger(os.Stdout)
-	/*
-		if len(os.Args) != 2 {
-			log.Fatal("incorrect number of launch parameters")
-		}*/
+	if len(os.Args) != 2 {
+		log.Fatal("incorrect number of launch parameters")
 
-	file, err := os.Open("tests/3.txt")
+	}
+
+	file, err := os.Open(os.Args[1])
 	if err != nil {
 		log.Fatal("can't open file", err)
 	}

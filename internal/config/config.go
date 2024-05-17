@@ -63,7 +63,5 @@ func MustLoad(reader *bufio.Reader, log lg.Log) *Config {
 		log.Fatal("incorrect cost format: ")
 	}
 
-	log.Info("Configuration: ", conf)
-
 	return conf
 }
