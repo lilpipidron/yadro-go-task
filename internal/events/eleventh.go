@@ -12,13 +12,17 @@ type Eleventh struct {
 	Name string
 }
 
-func (event *Eleventh) Execution(time time.Time, name string, club *club.Club, log lg.Log) {
-	log.Println(time, 11, name)
+func (event *Eleventh) Execution(club *club.Club, log lg.Log) {
+	log.Println(event.Time, 11, event.Name)
 
-	client := club.Clients[name]
-	delete(club.Clients, name)
+	client := club.Clients[event.Name]
+	delete(club.Clients, event.Name)
 
-	club.Earnings[client] = time
+	club.Earnings[client] = event.Time
 
-	club.EvalibleTables <- client.Table
+	delete(club.Queue, event.Name)
+
+	delete(club.Tables, client.Table)
+
+	club.EvalibleTables[client.Table] = client.Table
 }

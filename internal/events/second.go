@@ -33,6 +33,8 @@ func (event *Second) Execution(log lg.Log, club *club.Club) {
 
 	table := table.Table{ID: event.Table, Client: client}
 	club.Tables[event.Table] = table
+	delete(club.Queue, event.Name)
+	delete(club.EvalibleTables, table.ID)
 }
 
 func (event *Second) Parse(str string, log lg.Log) Event {

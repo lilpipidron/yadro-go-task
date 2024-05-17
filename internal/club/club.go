@@ -11,8 +11,8 @@ import (
 type Club struct {
 	Clients        map[string]client.Client
 	Tables         map[int]table.Table
-	EvalibleTables chan int
-	Queue          chan client.Client
+	EvalibleTables map[int]int
+	Queue          map[string]client.Client
 	Earnings       map[client.Client]time.Time
 	Config         config.Config
 }

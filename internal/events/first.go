@@ -1,12 +1,9 @@
 package events
 
 import (
-	"crypto/ed25519"
 	"fmt"
-	"go/ast"
 	"strings"
 	"time"
-	"unicode"
 
 	cl "github.com/lilpipidron/yadro-go-task/internal/client"
 	"github.com/lilpipidron/yadro-go-task/internal/club"
@@ -36,6 +33,7 @@ func (event *First) Execution(log lg.Log, club *club.Club) {
 	client := cl.Client{Name: event.Name, Table: 0}
 
 	club.Clients[client.Name] = client
+	club.Queue[client.Name] = client
 }
 
 func (event *First) Parse(str string, log lg.Log) Event {
