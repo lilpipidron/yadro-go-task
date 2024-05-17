@@ -17,7 +17,8 @@ type First struct {
 
 func (event *First) Execution(log lg.Log, club *club.Club) {
 	if _, ok := club.Clients[event.Name]; ok {
-		// 13 event
+		th := &Thirteenth{Time: event.Time, Error: YouShallNotPass}
+		th.Execution(log)
 		return
 	}
 
@@ -28,7 +29,7 @@ func (event *First) Execution(log lg.Log, club *club.Club) {
 
 	fmt.Println(event.Time, 1, event.Name)
 
-	client := cl.Client{event.Name, 0}
+	client := cl.Client{Name: event.Name, Table: 0}
 
 	club.Clients[client.Name] = client
 }

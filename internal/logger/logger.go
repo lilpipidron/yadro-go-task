@@ -9,7 +9,7 @@ import (
 type Log interface {
 	Fatal(a ...interface{})
 	Info(a ...interface{})
-	Ptintln(a ...interface{})
+	Println(a ...interface{})
 }
 
 type Logger struct {
