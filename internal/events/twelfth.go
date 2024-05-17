@@ -9,15 +9,17 @@ import (
 )
 
 type Twelfth struct {
-	Time time.Time
-	Name string
+	Time  time.Time
+	Name  string
+	Table int
 }
 
 func (event *Twelfth) Execution(club *club.Club, log lg.Log) {
-	tableID := <-club.EvalibleTables
-	log.Println(event.Time, 12, event.Name, tableID)
+	log.Println(event.Time, 12, event.Name, event.Table)
 
 	client := club.Clients[event.Name]
-	table := table.Table{Client: client, ID: tableID}
-	club.Tables[tableID] = table
+	client.Table = event.Table
+  club.Clients[client.Name] = client
+	table := table.Table{Client: client, ID: event.Table}
+	club.Tables[table.ID] = table
 }
